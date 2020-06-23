@@ -1,0 +1,38 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: neighborly-frontend4
+spec:
+  type: LoadBalancer
+  selector:
+    app: neighborly-frontend4
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neighborly-frontend4
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: neighborly-frontend4
+  template:
+    metadata:
+      labels:
+        app: neighborly-frontend4
+    spec:
+      containers:
+      - name: neighborly-frontend4
+        image: ndneigh.azurecr.io/neighborly-front:latest
+        ports:
+        - containerPort: 5000
+          hostPort: 5000
+          protocol: TCP
+      imagePullSecrets:
+      - name: azcrlogin
