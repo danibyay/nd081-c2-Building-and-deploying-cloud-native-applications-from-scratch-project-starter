@@ -1,19 +1,23 @@
 import azure.functions as func
 import pymongo
 import os
+import ssl
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-
+    print("entering create advertisement __________--------------================")
     request = req.get_json()
 
     if request:
         try:
-            url = "mongodb://nd-db:dJhfzUf1gYswJG9HYgl8sddJTb0Rc8GaurrWRNOAfMDSAwKr0JjsdM7dUO514KjgfNLRjtZctT8TuhAQqwV9yQ==@nd-db.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@nd-db@"
-            client = pymongo.MongoClient(url)
+            url = "mongodb://nd-db:dJhfzUf1gYswJG9HYgl8sddJTb0Rc8GaurrWRNOAfMDSAwKr0JjsdM7dUO514KjgfNLRjtZctT8TuhAQqwV9yQ==@nd-db.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@nd-db@"
+            client = pymongo.MongoClient(url,  ssl_cert_reqs=ssl.CERT_NONE)
             database = client['nd-db-mongo']
             collection = database['advertisements']
+            
+            print("request:", request)
+            rec_id1 = collection.insert_one(request)
+            
 
-            rec_id1 = collection.insert_one(eval(request))
 
             return func.HttpResponse(req.get_body())
 
