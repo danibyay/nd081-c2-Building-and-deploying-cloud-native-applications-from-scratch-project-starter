@@ -3,16 +3,16 @@ import azure.functions as func
 import pymongo
 import json
 from bson.json_util import dumps
-
+import os
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
 
     logging.info('Python getPosts trigger function processed a request.')
 
     try:
-        url = "localhost"  # TODO: Update with appropriate MongoDB connection information
+        url = "mongodb://nd-db:dJhfzUf1gYswJG9HYgl8sddJTb0Rc8GaurrWRNOAfMDSAwKr0JjsdM7dUO514KjgfNLRjtZctT8TuhAQqwV9yQ==@nd-db.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@nd-db@"
         client = pymongo.MongoClient(url)
-        database = client['azure']
+        database = client['nd-db-mongo']
         collection = database['posts']
 
         result = collection.find({})

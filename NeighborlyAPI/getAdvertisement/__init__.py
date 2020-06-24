@@ -4,19 +4,20 @@ import json
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 import logging
+import os
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
 
-    # example call http://localhost:7071/api/getAdvertisement/?id=5eb6cb8884f10e06dc6a2084
+    # example call http://localhost:7071/api/getAdvertisement/?id=5ec34b22b5f7f6eac5f2ec3e
 
     id = req.params.get('id')
     print("--------------->", id)
     
     if id:
         try:
-            url = "localhost"  # TODO: Update with appropriate MongoDB connection information
+            url = "mongodb://nd-db:dJhfzUf1gYswJG9HYgl8sddJTb0Rc8GaurrWRNOAfMDSAwKr0JjsdM7dUO514KjgfNLRjtZctT8TuhAQqwV9yQ==@nd-db.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@nd-db@" # TODO: Update with appropriate MongoDB connection information
             client = pymongo.MongoClient(url)
-            database = client['azure']
+            database = client['nd-db-mongo']
             collection = database['advertisements']
            
             query = {'_id': ObjectId(id)}
