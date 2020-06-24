@@ -4,6 +4,7 @@ import json
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 import os
+import ssl
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
 
@@ -12,11 +13,11 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if id:
         try:
             url = "mongodb://nd-db:dJhfzUf1gYswJG9HYgl8sddJTb0Rc8GaurrWRNOAfMDSAwKr0JjsdM7dUO514KjgfNLRjtZctT8TuhAQqwV9yQ==@nd-db.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@nd-db@"
-            client = pymongo.MongoClient(url)
+            client = pymongo.MongoClient(url, ssl_cert_reqs=ssl.CERT_NONE)
             database = client['nd-db-mongo']
             collection = database['posts']
 
-            query = {'_id': ObjectId(id)}
+            query = {'_id': id}
             result = collection.find_one(query)
             result = dumps(result)
 
